@@ -67,7 +67,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Используйте встроенный токен
         run: |
-          twine upload --repository-url https://upload.github.com/geniuslat/MlOps3Hw1/packages/ dist/*
+          twine upload --repository-url https://upload.github.com/geniuslat/MlOps3Hw1/packages/ -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}" .
 
 
 
