@@ -16,15 +16,11 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+      run: docker login --username geniuslat --password ${{ secrets.PAT }} ghcr.io
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/${{ github.repository }}/my-image-name:latest
+      run: docker build . --file Dockerfile --tag ghcr.io/geniuslat/automatic-image:latest
 
     - name: Push the Docker image
-      run: docker push ghcr.io/${{ github.repository }}/my-image-name:latest
+      run: docker push ghcr.io/geniuslat/automatic-image:latest
 
