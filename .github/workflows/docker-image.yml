@@ -10,8 +10,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: psf/black@stable
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'  
+
+      - name: Install black
+        run: pip install black
+
+      - name: Format code
+        run: black . --check || (black . && git config --global user.name 'github-actions' && git config --global user.email 'github-actions@github.com' && git add . && git commit -m 'Format code with black' && git push)
   build:
 
     runs-on: ubuntu-latest
