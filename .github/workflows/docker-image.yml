@@ -24,6 +24,9 @@ jobs:
       - name: Format code
         run: black . --check || (black . && git config --global user.name 'github-actions' && git config --global user.email 'github-actions@github.com' && git add . && git commit -m 'Format code with black' && git push)
 
+      - name: Install flake8
+        run: pip install flake8
+        
       - name: Lint with flake8
         run: flake8 .
   build:
