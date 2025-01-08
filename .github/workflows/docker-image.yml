@@ -75,10 +75,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v1
-        with:
-          R-version: '4.1'  # Укажите версию R, которую вы хотите использовать
+      #- name: Set up R
+      #  uses: r-lib/actions/setup-r@v1
+      #  with:
+      #    R-version: '4.1'  # Укажите версию R, которую вы хотите использовать
 
       - name: Install dependencies
         run: |
@@ -93,6 +93,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site  # Укажите путь к выходной директории Quarto
+          publish_dir: ./for_pages  # Укажите путь к выходной директории Quarto
 
 
