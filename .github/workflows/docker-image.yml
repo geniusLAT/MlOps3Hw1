@@ -68,6 +68,31 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Используйте встроенный токен
         run: |
           twine upload --repository-url https://upload.github.com/geniuslat/MlOps3Hw1/packages/ -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}" dist/*
+  pages:
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v1
+        with:
+          R-version: '4.1'  # Укажите версию R, которую вы хотите использовать
+
+      - name: Install dependencies
+        run: |
+          install.packages('quarto')
+          install.packages('rmarkdown')
+
+      - name: Build site
+        run: |
+          quarto render
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site  # Укажите путь к выходной директории Quarto
 
 
