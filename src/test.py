@@ -22,7 +22,7 @@ def load_data(file_path: str = "Credit_Default.csv") -> pd.DataFrame:
     """
     df = pd.read_csv(file_path)
     # Round all numeric columns to 2 decimal places
-    numeric_cols = df.select_dtypes(include=['float64']).columns
+    numeric_cols = df.select_dtypes(include=["float64"]).columns
     df[numeric_cols] = df[numeric_cols].round(2)
     return df
 
@@ -43,17 +43,17 @@ def analyze_missing_values(df: pd.DataFrame) -> dict:
     # Create missing values plot
     if missing_values.sum() > 0:
         plt.figure(figsize=(10, 6))
-        missing_percentages.plot(kind='bar')
-        plt.title('Missing Values by Column')
-        plt.ylabel('Percentage of Missing Values')
+        missing_percentages.plot(kind="bar")
+        plt.title("Missing Values by Column")
+        plt.ylabel("Percentage of Missing Values")
         plt.xticks(rotation=45)
         plt.tight_layout()
-        plt.savefig('./for_pages/png/missing_values.png')
+        plt.savefig("./for_pages/png/missing_values.png")
         plt.close()
 
     return {
-        'missing_counts': missing_values.to_dict(),
-        'missing_percentages': missing_percentages.to_dict()
+        "missing_counts": missing_values.to_dict(),
+        "missing_percentages": missing_percentages.to_dict(),
     }
 
 
@@ -65,11 +65,11 @@ def create_pairplot(df: pd.DataFrame) -> None:
         df (pd.DataFrame): Input dataset
     """
     # Automatically determine numerical columns (excluding the target variable)
-    numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
-    numerical_cols = numerical_cols[numerical_cols != 'Default'].tolist()
+    numerical_cols = df.select_dtypes(include=["float64", "int64"]).columns
+    numerical_cols = numerical_cols[numerical_cols != "Default"].tolist()
 
-    sns.pairplot(df, vars=numerical_cols, hue='Default', diag_kind='hist')
-    plt.savefig('./for_pages/png/pairplot.png')
+    sns.pairplot(df, vars=numerical_cols, hue="Default", diag_kind="hist")
+    plt.savefig("./for_pages/png/pairplot.png")
     plt.close()
 
 
@@ -81,14 +81,14 @@ def analyze_correlations(df: pd.DataFrame) -> None:
         df (pd.DataFrame): Input dataset
     """
     # Include all numeric columns including Default
-    numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
+    numerical_cols = df.select_dtypes(include=["float64", "int64"]).columns
     corr_matrix = df[numerical_cols].corr().round(2)
 
     plt.figure(figsize=(10, 8))
-    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', center=0, fmt='.2f')
-    plt.title('Correlation Matrix')
+    sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", center=0, fmt=".2f")
+    plt.title("Correlation Matrix")
     plt.tight_layout()
-    plt.savefig('./for_pages/png/correlation_matrix.png')
+    plt.savefig("./for_pages/png/correlation_matrix.png")
     plt.close()
 
 
@@ -102,22 +102,22 @@ def analyze_class_balance(df: pd.DataFrame) -> dict:
     Returns:
         dict: Dictionary containing class balance statistics
     """
-    class_counts = df['Default'].value_counts()
+    class_counts = df["Default"].value_counts()
     class_percentages = ((class_counts / len(df)) * 100).round(2)
 
     plt.figure(figsize=(8, 6))
-    class_counts.plot(kind='bar')
-    plt.title('Class Distribution')
-    plt.xlabel('Default Status')
-    plt.ylabel('Count')
+    class_counts.plot(kind="bar")
+    plt.title("Class Distribution")
+    plt.xlabel("Default Status")
+    plt.ylabel("Count")
     plt.xticks(rotation=0)
     plt.tight_layout()
-    plt.savefig('./for_pages/png/class_balance.png')
+    plt.savefig("./for_pages/png/class_balance.png")
     plt.close()
 
     return {
-        'counts': class_counts.to_dict(),
-        'percentages': class_percentages.to_dict()
+        "counts": class_counts.to_dict(),
+        "percentages": class_percentages.to_dict(),
     }
 
 
@@ -133,15 +133,14 @@ def main():
     print(df.head())
     print("\nDataset shape:", df.shape)
     print("\nColumn names:", list(df.columns))
-    print("\nData types:\n", df.dtypes, sep='')
+    print("\nData types:\n", df.dtypes, sep="")
 
     # Analyze missing values
     missing_analysis = analyze_missing_values(df)
     print("\nMissing Values Analysis:")
     print("-" * 50)
-    print("Missing value counts:", missing_analysis['missing_counts'])
-    print(
-        "Missing value percentages:", missing_analysis['missing_percentages'])
+    print("Missing value counts:", missing_analysis["missing_counts"])
+    print("Missing value percentages:", missing_analysis["missing_percentages"])
 
     # Create visualizations
     create_pairplot(df)
@@ -151,8 +150,8 @@ def main():
     # Print class balance information
     print("\nClass Balance Analysis:")
     print("-" * 50)
-    print("Class counts:", class_balance['counts'])
-    print("Class percentages:", class_balance['percentages'])
+    print("Class counts:", class_balance["counts"])
+    print("Class percentages:", class_balance["percentages"])
     print("-" * 50)
 
     # Generate Quarto report
@@ -176,7 +175,7 @@ def generate_quarto_report(
         class_balance (dict): Class balance analysis results
         descriptive_stats (dict): Descriptive statistics of the dataset
     """
-    if sum(missing_analysis['missing_counts'].values()) > 0:
+    if sum(missing_analysis["missing_counts"].values()) > 0:
         result = "![Распределение пропущенных значений](./png/missing_values.png)"  # noqa: E501
     else:
         result = "В наборе данных не было обнаружено пропущенных значений."
